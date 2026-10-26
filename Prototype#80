@@ -1,0 +1,94 @@
+In JavaScript, a prototype is an object from which another object can inherit properties and methods.
+
+Think of it like this: if an object doesn't have a particular method, JavaScript can look for that method in its prototype. 👇
+
+## 1. Simple example
+
+```
+let person = {
+    name: "Ibrahim"
+};
+
+console.log(person.name);       // Ibrahim
+console.log(person.toString);   // A function
+```
+
+You created only the `name` property. So, where did `toString()` come from?
+
+It comes from the prototype chain! JavaScript objects can access methods inherited from `Object.prototype`.
+
+## 2. How does a prototype work?
+
+person object
+
+name: "Ibrahim"
+
+Prototype link
+
+Object.prototype
+
+toString(), hasOwnProperty(), etc.
+
+When JavaScript can't find a property on `person`, it checks the prototype, then continues up the prototype chain until it finds the property or reaches the end.
+
+## 3. What is `prototype` in a constructor function?
+
+```
+function Person(name) {
+    this.name = name;
+}
+
+Person.prototype.sayHello = function() {
+    console.log("Hello, " + this.name);
+};
+
+let p1 = new Person("Ibrahim");
+let p2 = new Person("Ali");
+
+p1.sayHello(); // Hello, Ibrahim
+p2.sayHello(); // Hello, Ali
+```
+
+Here is what happens:
+
+- `Person` is a constructor function.
+- `Person.prototype` stores the `sayHello` method.
+- `p1` and `p2` can both access that method through their prototype.
+- The method is shared instead of creating a separate copy for every object.
+
+## 4. Remember the difference
+
+| Term                        | Simple meaning                                                          |
+| --------------------------- | ----------------------------------------------------------------------- |
+| `Person.prototype`          | An object used as the prototype for objects created with `new Person()` |
+| `p1.__proto__`              | A legacy way to access the prototype of `p1`                            |
+| `Object.getPrototypeOf(p1)` | The recommended way to get `p1`'s prototype                             |
+| Prototype chain             | The chain JavaScript follows to look up properties                      |
+
+Important: `prototype` and `__proto__` are related but not the same thing.
+
+## 5. Quick practice 🧠
+
+What will this code print?
+
+```
+function Animal() {}
+
+Animal.prototype.sound = "Bark";
+
+let dog = new Animal();
+
+console.log(dog.sound);
+```
+
+Choose your answer:
+
+`undefined`
+
+`Bark`
+
+An error
+
+Correct! 🎉
+
+`dog` inherits access to `sound` from `Animal.prototype`.
